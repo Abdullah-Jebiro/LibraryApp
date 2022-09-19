@@ -1,6 +1,8 @@
 ﻿using LibraryData;
 using LibraryDemian;
+using Logger;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using Microsoft.Extensions.Logging;
 using Services;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
@@ -11,11 +13,10 @@ using static Services.Services;
 namespace LibraryMain
 {
     internal class Program
-    {
-   
+    {    
         static void Main(string[] args)
         {
-            
+            FileLogger logger = new FileLogger();
             Console.WriteLine("Hello");
             AdddefualtUsers();
             if (IsUser())
@@ -43,6 +44,11 @@ namespace LibraryMain
                     case "4":
                         UpdateBook();
                         break;
+                    default:
+                        logger.LogInformation("wrong number");
+                        break;
+
+
                 }
             }
         }
