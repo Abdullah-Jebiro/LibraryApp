@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryData
 {
-    public class AppDBcontext : DbContext
+    public class DB : DbContext
     {
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<Book> Books { get; set; } = null!;
