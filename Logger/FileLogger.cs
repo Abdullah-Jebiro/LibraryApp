@@ -1,29 +1,27 @@
 ﻿namespace Logger
 {
    
-     public class FileLogger :ILog
+    public  class FileLogger
     {
        
-        static public string FilePath = @".\Log.txt";
-        public void Log(string message , string messageType)
+        static string filePath = @"./Log.txt";
+        static public string UserName { get; set; } = null!;
+
+        static void Log(string message)
         {
-            File.AppendAllText(FilePath, message);
+            File.AppendAllText(filePath, $"\r\n{message}");
         }
-         public void LogError(string message)
+        static public void LogError(string message)
         {
-            Log(message, "Error");
+            Log("{message}\tError");
         }
-        public void LogWaring(string message)
+        static public void LogUser(string message)
         {
-            Log(message, "Waring");
+            Log($"{message}\t UserName:{FileLogger.UserName}\t{DateTime.Now}");
         }
-        public void LogInformation(string message)
+        static public void LogUser(string message, int BookId)
         {
-            Log(message, "Error");
-        }
-        public void LogUser(string message , string userName , int id)
-        {
-            Log($"{message}\tuserName:{userName}\t BookId:{id}", "Error");
+            Log($"{message}\tBookId:{BookId}\t\tUserName:{FileLogger.UserName}\t{ DateTime.Now}");
         }
     }
 

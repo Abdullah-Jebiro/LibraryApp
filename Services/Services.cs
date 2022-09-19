@@ -1,23 +1,45 @@
 ﻿using LibraryData;
 using LibraryDemian;
+using Logger;
 using System.Text.Json;
 
 namespace Services
 {
     public class Services
     {
-        public static void AdddefualtUsers()
+
+        static bool BookIdCorrect(int Id)
         {
             using (var context = new DB())
             {
-                if (!context.Users.Any())
+                if (!context.Books.Any(b => b.BookId == Id))
                 {
-                    string cotents = File.ReadAllText("default.json");
-                    var defualtUsers = JsonSerializer.Deserialize<List<User>>(cotents);
-                    context.Users.AddRange(defualtUsers);
-                    context.SaveChanges();
-
+                    FileLogger.LogUser("The Id is invalid");
+                    Console.WriteLine("The Id is invalid");
+                    return false;
                 }
+                return true;
+            }
+        }
+        public static void AdddefualtUsers()
+        {
+            try
+            {
+                using (var context = new DB())
+                {
+                    if (!context.Users.Any())
+                    {
+                        string cotents = File.ReadAllText("default.json");
+                        var defualtUsers = JsonSerializer.Deserialize<List<User>>(cotents);
+                        context.Users.AddRange(defualtUsers);
+                        context.SaveChanges();
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                FileLogger.LogError(e.Message);
             }
         }
         public static bool IsUser()
@@ -29,6 +51,12 @@ namespace Services
                 Console.Write("Enter Password:");
                 string Password = Console.ReadLine().Trim();
                 bool isUser = context.Users.Any(u => u.UserName == UserName && u.Password == Password);
+                if (isUser)
+                {
+                    FileLogger.LogUser("Login in");
+                    FileLogger.UserName = UserName;
+
+                }
                 return isUser;
             }
         }
@@ -48,42 +76,55 @@ namespace Services
                 {
                     Console.WriteLine($"Id:{book.BookId} Title:{book.Title} Count:{book.Count}");
                 }
-                Console.WriteLine(context.Books.Sum(b => b.Count));
+                Console.WriteLine($"number of books : {context.Books.Sum(b => b.Count)}");
+                FileLogger.LogUser("Get information Books");
             }
         }
         public static void GetBook()
         {
             Console.Write("Enter Id:");
             int id = Convert.ToInt32(Console.ReadLine());
-            using (var context = new DB())
+            if (BookIdCorrect(id))
             {
-                var book = context.Books.SingleOrDefault(b => b.BookId == id);
-                Console.WriteLine($"Id:{book.BookId} Title:{book.Title} Count:{book.Count} Price {book.Price}");
+                using (var context = new DB())
+                {
+                    var book = context.Books.SingleOrDefault(b => b.BookId == id);
+                    Console.WriteLine($"Id:{book.BookId} Title:{book.Title} Count:{book.Count} Price {book.Price}");
+                    FileLogger.LogUser("Get information Books", id);
+                }
             }
         }
         public static void DeleteBook()
         {
             Console.Write("Enter Id:");
             int id = Convert.ToInt32(Console.ReadLine());
-            using (var context = new DB())
+            if (BookIdCorrect(id))
             {
-                var book = context.Books.SingleOrDefault(b => b.BookId == id);
-                context.Books.Remove(book);
-                context.SaveChanges();
+                FileLogger.LogUser("Delete Book", id);
+                using (var context = new DB())
+                {
+                    var book = context.Books.SingleOrDefault(b => b.BookId == id);
+                    context.Books.Remove(book);
+                    context.SaveChanges();
+                }
             }
         }
         public static void UpdateBook()
         {
             Console.Write("Enter Id:");
             int id = Convert.ToInt32(Console.ReadLine());
-            using (var context = new DB())
+            if (BookIdCorrect(id))
             {
-                var book = context.Books.SingleOrDefault(b => b.BookId == id);
-                Console.Write("Enter Title:");
-                book.Title = Console.ReadLine();
-                Console.Write("Enter Price:");
-                book.Price = Convert.ToInt32(Console.ReadLine());
-                context.SaveChanges();
+                FileLogger.LogUser("Update Book", id);
+                using (var context = new DB())
+                {
+                    var book = context.Books.SingleOrDefault(b => b.BookId == id);
+                    Console.Write("Enter Title:");
+                    book.Title = Console.ReadLine();
+                    Console.Write("Enter Price:");
+                    book.Price = Convert.ToInt32(Console.ReadLine());
+                    context.SaveChanges();
+                }
             }
         }
     }
