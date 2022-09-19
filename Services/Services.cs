@@ -53,8 +53,8 @@ namespace Services
                 bool isUser = context.Users.Any(u => u.UserName == UserName && u.Password == Password);
                 if (isUser)
                 {
-                    FileLogger.LogUser("Login in");
                     FileLogger.UserName = UserName;
+                    FileLogger.LogUser("Login in");
 
                 }
                 return isUser;
@@ -90,7 +90,7 @@ namespace Services
                 {
                     var book = context.Books.SingleOrDefault(b => b.BookId == id);
                     Console.WriteLine($"Id:{book.BookId} Title:{book.Title} Count:{book.Count} Price {book.Price}");
-                    FileLogger.LogUser("Get information Books", id);
+                    FileLogger.LogUser("Get information Book", id);
                 }
             }
         }
