@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LibraryData\LibraryData.csproj" />
     <ProjectReference Include="..\LibraryDemian\LibraryDemian.csproj" />
+    <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
