@@ -15,12 +15,12 @@ namespace LibraryMain
         static void Main(string[] args)
         {
 
-            AdddefualtUsers();
+            AddDefualtUsers();
             if (IsUser())
             {
                 Console.WriteLine($"\nNumber of books {BooksCount()}");
 
-                string num = String.Empty;
+                string? num = String.Empty;
                 do
                 {
                     Console.WriteLine($"\r\n" +

@@ -7,7 +7,6 @@ namespace Services
 {
     public class Services
     {
-
         static bool BookIdCorrect(int Id)
         {
             using (var context = new DB())
@@ -21,7 +20,7 @@ namespace Services
                 return true;
             }
         }
-        public static void AdddefualtUsers()
+        public static void AddDefualtUsers()
         {
             try
             {
@@ -71,7 +70,10 @@ namespace Services
         {
             using (var context = new DB())
             {
-                var books = context.Books.Select(b => new { b.BookId, b.Title, b.Count }).ToList(); ;
+                var books = context.Books.Select(b => new { 
+                    b.BookId,
+                    b.Title,
+                    b.Count }).ToList(); ;
                 foreach (var book in books)
                 {
                     Console.WriteLine($"Id:{book.BookId} Title:{book.Title} Count:{book.Count}");

@@ -13,7 +13,7 @@
         }
         static public void LogError(string message)
         {
-            Log("{message}\tError");
+            Log($"{message}\tError");
         }
         static public void LogUser(string message)
         {
